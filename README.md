@@ -40,7 +40,9 @@ The network uses two padded 3x3 convolution layers (16 and 32 channels), each fo
 
 ## Evaluation Results
 
-Results below are from the validated three-epoch CPU run with seed 42 on the 10,000-image CIFAR-10 test split. Results can vary across devices and library versions.
+Results below are from a 3-epoch CPU run with seed 42 on the 10,000-image CIFAR-10 test split.
+
+![Confusion Matrix](artifacts/confusion_matrix.png)
 
 | Class | Precision | Recall | F1-score |
 | --- | ---: | ---: | ---: |
@@ -57,3 +59,10 @@ Results below are from the validated three-epoch CPU run with seed 42 on the 10,
 | Accuracy |  |  | 0.6675 |
 | Macro average | 0.6775 | 0.6675 | 0.6678 |
 | Weighted average | 0.6775 | 0.6675 | 0.6678 |
+
+
+## Engineering Observations
+
+* **Geometric vs. Organic Classes:** Rigid, high-contrast structural classes like **Ship** (F1: 0.7812) and **Car** (F1: 0.7268) performed best because convolutional kernels easily isolate distinct lines and background contrasts.
+* **The Cat/Dog Confusion Trap:** Organic classes with high visual variance and similar texture backgrounds (specifically **Cat** at 0.5132 and **Dog** at 0.5750) suffered the highest confusion rates at 32x32 resolution.
+* **Baseline Ceiling:** A 3-epoch baseline without data augmentation or normalization tuning tops out around ~67% accuracy, providing a solid lower bound before introducing deeper residual architectures or pretrained backbones.
